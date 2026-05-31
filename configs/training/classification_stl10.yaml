@@ -1,0 +1,40 @@
+approach: classification
+dataset: stl10
+data_dir: data
+output_dir: runs
+epochs: 150
+batch_size: 64
+lr: 3.0e-4
+weight_decay: 5.0e-2
+optimizer: adamw
+optimizer_betas: [0.9, 0.999]
+momentum: 0.9
+image_size: 96
+patch_size: 8
+embed_dim: 192
+depth: 6
+num_heads: 6
+mlp_ratio: 4.0
+dropout: 0.1
+attention_dropout: 0.1
+label_smoothing: 0.1
+color_jitter_strength: 0.2
+random_erasing_prob: 0.15
+randaugment_num_ops: 2
+randaugment_magnitude: 7
+position_embedding: learned
+device: auto
+seed: 42
+num_workers: 0
+checkpoint_keep_last: 3
+save_every: 1
+scheduler: cosine
+warmup_epochs: 10
+min_lr: 1.0e-5
+val_fraction: 0.1
+split_train_validation: true
+show_progress: true
+external_image_dir: data/external_images
+external_image_size: 96
+external_mean: [0.4467, 0.4398, 0.4066]
+external_std: [0.2241, 0.2215, 0.2239]
