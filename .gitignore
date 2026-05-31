@@ -1,0 +1,84 @@
+# --- Secrets (never publish) ---
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+kaggle.json
+*credential*
+*secret*
+
+# --- Model weights / checkpoints ---
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.bin
+*.h5
+*.onnx
+*.gguf
+*.pkl
+*.joblib
+models/
+checkpoints/
+weights/
+runs/
+outputs/
+logs/
+tmp/
+
+# --- Datasets (ship tiny public samples only, by explicit exception) ---
+data/
+datasets/
+dataset/
+*.csv
+*.tar
+*.tar.gz
+*.zip
+*.parquet
+
+# --- Literature ---
+*.pdf
+litterature/
+literature/
+papers/
+specs/
+
+# --- Python ---
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.egg-info
+
+# --- JS / build ---
+node_modules/
+dist/
+build/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# --- Local AI agent / Spec Kit state (never publish) ---
+.claude/
+.agents/
+.specify/
+.codex/
+.cursor/
+.windsurf/
+AGENTS.md
+AGENT.md
+CLAUDE.md
+GEMINI.md

@@ -1,0 +1,21 @@
+# Mirrors the convention already used in the public GPT-2_from_scratch repo:
+# nb-clean strips notebook outputs so they never enter version control.
+# Install once per repo:  uv pip install pre-commit && pre-commit install
+repos:
+  - repo: https://github.com/srstevenson/nb-clean
+    rev: "4.0.1"
+    hooks:
+      - id: nb-clean
+        args: [--remove-empty-cells]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: [--maxkb=5000]
+      - id: detect-private-key
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-toml

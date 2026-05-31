@@ -1,0 +1,26 @@
+[project]
+name = "vit-from-scratch"
+version = "0.1.0"
+description = "Vision Transformer from scratch study focused on patch embeddings, self-attention, representation learning, and image classification."
+requires-python = ">=3.12"
+dependencies = [
+  "matplotlib",
+  "numpy",
+  "PyYAML",
+  "tqdm",
+  "torch",
+  "torchvision",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit>=3.7",
+  "pytest",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
