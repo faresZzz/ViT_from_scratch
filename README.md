@@ -1,49 +1,51 @@
 # ViT from Scratch
 
-Implementation PyTorch d'un Vision Transformer ecrite comme projet d'etude. Le but est simple : reconstruire les mecanismes centraux du ViT, puis les reutiliser dans trois cadres d'apprentissage differents avec un code assez court pour rester lisible.
+A PyTorch implementation of the Vision Transformer, written as a study project. The idea: rebuild the core ViT mechanisms yourself, then reuse them across three different training paradigms. The code stays short enough to actually read.
 
-Le meme backbone sert ici a :
+The same backbone serves for:
 
-- la classification supervisee,
-- un masked autoencoder (MAE),
-- une variante teacher-student de type DINO.
+- supervised classification,
+- a masked autoencoder (MAE),
+- a DINO-style teacher-student setup.
 
-Ce depot est pense pour quelqu'un qui veut lire le code en meme temps que les papiers, suivre le passage image -> patches -> tokens -> attention, et comparer ce qui change vraiment entre ces trois objectifs.
+This repo is meant for someone who wants to read the code alongside the papers, follow the path from image to patches to tokens to attention, and see what actually changes between these three objectives.
+
+> **Note:** the notebooks and code comments are written in French. The explanations, equations, and visualizations should still be followable with the code context.
 
 ## Motivation
 
-Les Vision Transformers sont devenus faciles a lancer avec des bibliotheques existantes. En revanche, il est moins facile de voir clairement ce que fait chaque bloc quand tout arrive deja empaquete.
+Vision Transformers are easy to run with existing libraries. What is less easy is seeing clearly what each block does when everything comes pre-packaged.
 
-J'ai construit ce projet pour garder cette partie visible. Le code isole les briques importantes, les notebooks montrent les tenseurs et les figures intermediaires, et les recettes d'entrainement restent a petite echelle pour qu'on puisse les relire, les modifier et les rerunner sans transformer le depot en pipeline de benchmark.
+I built this project to keep that part visible. The code isolates the important building blocks, the notebooks show intermediate tensors and figures, and the training recipes stay at small scale so you can read them, modify them, and rerun them without turning the repo into a benchmarking pipeline.
 
-## Ce que le depot couvre
+## What the repo covers
 
-- patch embedding et tokenisation d'images en sequences,
-- embeddings positionnels learned, sine-cosine et RoPE / RoPE2D,
-- multi-head self-attention et blocs encodeur pre-norm,
-- classification supervisee avec class token,
-- masked autoencoding avec reconstruction de patches masques,
-- DINO avec teacher EMA, multi-crop views et evaluation kNN,
-- visualisations d'attention, reconstructions et courbes d'entrainement.
+- Patch embedding and image tokenization into sequences
+- Positional embeddings: learned, sine-cosine, and RoPE / RoPE 2D
+- Multi-head self-attention and pre-norm encoder blocks
+- Supervised classification with a class token
+- Masked autoencoding with patch reconstruction
+- DINO with teacher EMA, multi-crop views, and kNN evaluation
+- Attention visualizations, reconstructions, and training curves
 
-## References de depart
+## References
 
-Le projet est parti des papiers, puis a ete transforme en modules PyTorch et en notebooks d'explication.
+The project started from the papers, then got turned into PyTorch modules and explanatory notebooks.
 
-- [An Image is Worth 16x16 Words](https://arxiv.org/abs/2010.11929)
-- [Masked Autoencoders Are Scalable Vision Learners](https://arxiv.org/abs/2111.06377)
-- [Emerging Properties in Self-Supervised Vision Transformers](https://arxiv.org/abs/2104.14294)
-- [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
-- [RoFormer](https://arxiv.org/abs/2104.09864)
+- [An Image is Worth 16x16 Words](https://arxiv.org/abs/2010.11929) (Dosovitskiy et al., 2020)
+- [Masked Autoencoders Are Scalable Vision Learners](https://arxiv.org/abs/2111.06377) (He et al., 2021)
+- [Emerging Properties in Self-Supervised Vision Transformers](https://arxiv.org/abs/2104.14294) (Caron et al., 2021)
+- [Attention Is All You Need](https://arxiv.org/abs/1706.03762) (Vaswani et al., 2017)
+- [RoFormer](https://arxiv.org/abs/2104.09864) (Su et al., 2021)
 
-## Structure du depot
+## Repo structure
 
 ```text
 src/vit_from_scratch/
   model.py, config.py                    # VisionTransformer, configuration
   patch_embedding.py, embedding.py       # patchification, positions, RoPE
-  attention.py, encoder.py, mlp.py       # blocs Transformer
-  classification.py                      # entrainement supervise
+  attention.py, encoder.py, mlp.py       # Transformer blocks
+  classification.py                      # supervised training
   masked_autoencoder.py                  # MAE
   dino.py                                # DINO
   train.py, training.py, training_loop.py
@@ -57,18 +59,18 @@ notebooks/
   04_training_methods.ipynb
   experiment_results.ipynb
 
-configs/training/                        # configs YAML par approche et dataset
-tests/                                   # tests unitaires, smoke tests, notebooks clean
-scripts/download_external_images.py      # images externes pour figures qualitatives
+configs/training/                        # YAML configs per approach and dataset
+tests/                                   # unit tests, smoke tests, notebook checks
+scripts/download_external_images.py      # external images for qualitative figures
 ```
 
-## Jeux de donnees et artefacts
+## Datasets and artifacts
 
-Le depot versionne le code, les configs et les notebooks sans outputs. Les datasets, checkpoints, runs et images externes restent locaux et sont ignores par Git. En pratique, les dossiers `data/` et `runs/` sont regeneres localement.
+The repo versions code, configs, and notebooks without outputs. Datasets, checkpoints, runs, and external images stay local and are gitignored. In practice, the `data/` and `runs/` directories are regenerated locally.
 
-Les configurations couvrent des experiences sur `fake`, `CIFAR-10`, `STL-10` et `TinyImageNet`, selon l'approche choisie.
+The configurations cover experiments on `fake`, `CIFAR-10`, `STL-10`, and `TinyImageNet`, depending on the approach.
 
-## Demarrage rapide
+## Quick start
 
 ```bash
 uv venv && source .venv/bin/activate
@@ -77,50 +79,50 @@ pytest tests/ -q
 python -m vit_from_scratch.train --config configs/training/classification_fake.yaml
 ```
 
-Le chemin le plus utile pour decouvrir le projet est :
+The most useful path through the project:
 
 1. `notebooks/01_vit_building_blocks.ipynb`
 2. `notebooks/03_training_walkthrough.ipynb`
 3. `notebooks/04_training_methods.ipynb`
 4. `notebooks/experiment_results.ipynb`
 
-## Organisation du code
+## Code organization
 
-Le code est structure autour d'un backbone ViT unique et de tetes ou routines d'entrainement specialisees.
+The code is structured around a single ViT backbone and specialized training heads or routines.
 
-- `model.py` definit le ViT de base.
-- `classification.py` gere le cas supervise.
-- `masked_autoencoder.py` ajoute l'objectif de reconstruction.
-- `dino.py` gere la logique teacher-student et les vues multi-crop.
-- `evaluation.py` regroupe les metriques et les sorties qualitatives.
-- `train.py` fournit une CLI commune pour lancer les differentes approches a partir des fichiers YAML.
+- `model.py` defines the base ViT.
+- `classification.py` handles the supervised case.
+- `masked_autoencoder.py` adds the reconstruction objective.
+- `dino.py` handles teacher-student logic and multi-crop views.
+- `evaluation.py` groups metrics and qualitative outputs.
+- `train.py` provides a common CLI to launch different approaches from YAML files.
 
-L'idee est de comparer les methodes sans dupliquer toute l'architecture a chaque fois.
+The idea is to compare methods without duplicating the architecture each time.
 
-## Resultats et lecture des sorties
+## Results and reading the outputs
 
-Le projet produit des runs lisibles plutot que de gros tableaux de performance. Les sorties utiles sont :
+The project produces readable runs rather than large performance tables. The useful outputs are:
 
-- les courbes d'entrainement et de validation,
-- les cartes d'attention,
-- les reconstructions MAE,
-- les figures sur images externes,
-- les sondes kNN pour juger la qualite des representations en DINO.
+- training and validation curves,
+- attention maps,
+- MAE reconstructions,
+- figures on external images,
+- kNN probes to judge representation quality in DINO.
 
-Le notebook `notebooks/experiment_results.ipynb` sert de guide de lecture pour ces artefacts et explique ce qu'il faut regarder dans un run reussi, mediocre ou instable.
+`notebooks/experiment_results.ipynb` walks through these artifacts and explains what to look for in a successful, mediocre, or unstable run.
 
 ## Limitations
 
-- Les experiences sont volontairement petites et ont ete developpees sur Mac M2.
-- Le depot n'essaie pas de reproduire les recettes ImageNet a grande echelle.
-- Aucun poids pre-entraine n'est publie.
-- Les notebooks sont une partie centrale du livrable, pas un simple accompagnement.
-- MAE et DINO sont implementes comme versions pedagogiques et entrainables, pas comme reproductions industrielles des papiers originaux.
+- Experiments are intentionally small and were developed on a Mac M2.
+- The repo does not attempt to reproduce large-scale ImageNet recipes.
+- No pretrained weights are published.
+- The notebooks are a central part of the deliverable, not a side accompaniment.
+- MAE and DINO are implemented as pedagogical, trainable versions, not as industrial reproductions of the original papers.
 
-## Statut
+## Status
 
-Le socle du projet est en place : backbone ViT, trois approches d'entrainement, configs YAML, tests, et notebooks d'explication.
+Backbone ViT, three training approaches, YAML configs, tests, and explanatory notebooks are all in place.
 
-## Licence
+## License
 
-Voir [LICENSE](LICENSE).
+See [LICENSE](LICENSE).
